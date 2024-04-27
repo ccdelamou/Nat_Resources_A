@@ -2,8 +2,8 @@
 
 %Endogenous variables
 var GDP MC PJ PO PN PD Omega q Q QC QI QCf QIf qf C Ig Pi Yc W N tauC
-ic Bc Bg Bf PYo To Wo pi Tr Kg F T D Y S d ig gF iff G XoM iF ifp M ZM
-Res Resp A Zo Zic Zres ZF Rat Ztauc Zig
+ic Bc Bg Bf PYo To Wo pi Tr Kg F T D Y S d ig gF iff G XoM iF ifp M
+Res Resp A Zo ZF Rat Ztauc Zig
 sigma;
 
 % Exogenous variables
@@ -39,7 +39,7 @@ model;
 (1+tauC)*C+(1+ic(-1))*(Bc(-1)/pi)+M+Bg = N*W+S*Wo+(M(-1)/pi)+(1+ic(-1))*(Bg(-1)/pi)+Tr+Omega+Bc;
 (C(+1)/C)^sigma = (1+ic)*(Beta/pi(+1));
 (C^sigma)*(N^phi) = W/(1+tauC);
-(C^sigma)*(M^(-nu))*ZM = ic/((1+tauC)*(1+ic));
+(C^sigma)*(M^(-nu)) = ic/((1+tauC)*(1+ic));
 
 //Government
 (1+ic(-1))*(Bg(-1)/pi)+Pi*Ig+G+Tr+(1+iff(-1))*S*(Bf(-1)/pi)+S*F = T+S*To+(1+iF)*S*F(-1)+D;
@@ -65,9 +65,9 @@ iF = STEADY_STATE(ic)/6;
 ifp = iF;
 
 //Central Bank
-ic - STEADY_STATE(ic)*Zic = alphaY*((Y-Yp)/Yp)+alphapi*(pi-pip);
+ic - STEADY_STATE(ic) = alphaY*((Y-Yp)/Yp)+alphapi*(pi-pip);
 Res = Res(-1)+To+Wo+(1+iF)*F(-1)+Bf-qf*(QCf+QIf)-F-(1+iff(-1))*Bf(-1);
-Res/Resp = (((STEADY_STATE(S))/S)^alphaRes)*Zres;
+Res/Resp = ((STEADY_STATE(S))/S)^alphaRes;
 Resp = res*(qf(-1)*(QCf(-1)+QIf(-1))+qf(-2)*(QCf(-2)+QIf(-2)));
 
 //Firms
@@ -99,12 +99,8 @@ sigma = 2.94;
 //Exogenous Shocks (Used eZo for all active and eA for all non active shocks, to avoid repetition)
 A = (exp(eA))*(A(-1)^Rho);
 Zo = (exp(-eZo))*(Zo(-1)^Rho);
-
-ZM = (exp(eA))*(ZM(-1)^Rho);
 ZF = (exp(eA))*(ZF(-1)^Rho);
 Zig = (exp(eA))*(Zig(-1)^Rho);
-Zic = (exp(eA))*(Zic(-1)^Rho);
-Zres = (exp(eA))*(Zres(-1)^Rho);
 Ztauc = (exp(eA))*(Ztauc(-1)^Rho);
 end;
 
@@ -175,11 +171,8 @@ Resp = res*(2*qf*(QCf+QIf));
 Res = Resp;
 XoM = PYo/qf*(QCf+QIf);
 A = 1;
-ZM = 1;
 Zo = 1;
 ZF = 1;
-Zres = 1;
-Zic = 1;
 Ztauc = 1;
 Zig = 1;
 end;
@@ -215,4 +208,3 @@ stoch_simul(irf=40,periods=1000,qz_zero_threshold=1e-20) GDP Y C Bc pi ic N Kg B
 //    irf_data_transposed = irf_data';  % For transposing the data
 //    csvwrite(['/Path/to/intended/destination/', 'IRF_', irf_names{i}, '.csv'], irf_data_transposed);
 //end
-

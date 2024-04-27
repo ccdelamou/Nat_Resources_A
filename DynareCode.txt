@@ -3,19 +3,18 @@
 %Endogenous variables
 var GDP MC PJ PO PN PD Omega q Q QC QI QCf QIf qf C Ig Pi Yc W N tauC
 ic Bc Bg Bf PYo To Wo pi Tr Kg F T D Y S d ig gF iff G XoM iF ifp M
-Res Resp A Zo ZF Rat Ztauc Zig
-sigma;
+Res Resp A Zo ZF Rat Ztauc Zig;
 
 % Exogenous variables
 varexo eA eZo;
 
 % Parameters
-parameters phi epsilon Beta theta Rho tauCp b tauo delta alphaK nu
+parameters phi epsilon Beta theta Rho tauCp b tauo delta alphaK nu sigma
 alphaY alphapi alphaif alphaC igp pip gFp g tr alphaRes  wo res Eqf vc vi
 Yp EPYo;
 
 %Parameter values
-phi = 10; epsilon = 12.11; Beta = 0.893; theta = 0.7499;
+phi = 10; epsilon = 12.11; Beta = 0.893; theta = 0.7499; sigma = 2.94;
 g = 0.0835; tr = 0.0583; igp = 0.22; pip = 1; res = 0.125;
 vc = 0.86; vi = 0.73; Rho = 0.9; delta = 0.07; tauo = 0.45;
 b = 0.44; wo = 0.068;  alphaK = 0.16;
@@ -93,9 +92,6 @@ XoM = PYo/qf*(QCf+QIf);
 PYo = EPYo*Zo;
 qf = Eqf;
 
-//For Simulating Shocks to MU of Consumption
-sigma = 2.94;
-
 //Exogenous Shocks (Used eZo for all active and eA for all non active shocks, to avoid repetition)
 A = (exp(eA))*(A(-1)^Rho);
 Zo = (exp(-eZo))*(Zo(-1)^Rho);
@@ -107,7 +103,6 @@ end;
 //The derived steady state
 
 steady_state_model;
-sigma = 2.94;
 qf = Eqf;
 tauC = tauCp;
 ic = (1/Beta)-1;
